@@ -2,14 +2,29 @@
 //
 using namespace std;
 #include <iostream>
+#include <string>
 
 int main()
 {
     const int MAX_SIZE = 100;
     int size = 0;
-    int data[MAX_SIZE];
+    float data[MAX_SIZE];
+    string input;
+    do {
+        cout << "Enter data point (leave blank to stop): ";
+        getline(cin, input);
 
-    cout << "Enter data point (leave blank to stop): ";
+        if (input.empty()) {
+            break;
+        }
+
+        else {
+            float value = stof(input);
+            data[size] = value;
+            size++;
+        }
+    } while (size < MAX_SIZE);
+
 
     
 }
