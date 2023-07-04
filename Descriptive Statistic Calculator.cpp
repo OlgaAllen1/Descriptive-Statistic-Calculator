@@ -12,6 +12,7 @@ double calculateMedian(double*, int);
 double calculateRange(double*, int);
 double calculateSampleVariance(double*, int);
 double calcSampleStandardDeviation(double*, int);
+void findMode(double*, int);
 
 int main()
 {
@@ -40,8 +41,12 @@ int main()
     sort(copyData, size);
     cout << "Sorted dataset : ";
     printDataSet(copyData, size);
+    cout << "CENTRAL TENDANCY" << endl;
     cout << "Mean: " << calculateMean(copyData, size) << endl;
     cout << "Median: " << calculateMedian(copyData, size) << endl;
+    cout << "Mode: ";
+    findMode(copyData, size);
+    cout << "DISPERSION" << endl;
     cout << "Range: " << calculateRange(copyData, size) << endl;
     cout << "Sample variance: " << calculateSampleVariance(copyData, size) << endl;
     cout << "Sample Standard Deviation: " << calcSampleStandardDeviation(copyData, size) << endl;
@@ -110,4 +115,70 @@ double calculateSampleVariance(double* dataSet, int size) {
 
 double calcSampleStandardDeviation(double* dataSet, int size) {
     return sqrt(calculateSampleVariance(dataSet, size));
+}
+
+void findMode(double* dataSet, int size) {
+    double** frequencyArray = new double* [2];
+    for (int i = 0; i < 2; i++) {
+        frequencyArray[i] = new double[size];
+    }
+    int modeCount = 0;
+    int maxFrequency = 0;
+
+    // Initialize the frequency array
+    for (int i = 0; i < size; i++) {
+        frequencyArray[0][i] = dataSet[i];
+        frequencyArray[1][i] = 0;
+    }
+
+    // Calculate the frequencies
+    for (int i = 0; i < size; i++) {
+        double value = dataSet[i];
+        bool isNewValue = true;
+
+        // Check if the value is already recorded in the frequency array
+        for (int j = 0; j < modeCount; j++) {
+            if (value == frequencyArray[0][j]) {
+                frequencyArray[1][j]++;
+                isNewValue = false;
+                break;
+            }
+        }
+
+        // If the value is new, add it to the frequency array
+        if (isNewValue) {
+            frequencyArray[0][modeCount] = value;
+            frequencyArray[1][modeCount] = 1;
+            modeCount++;
+        }
+    }
+
+    // Find the maximum frequency
+    for (int i = 0; i < modeCount; i++) {
+        if (frequencyArray[1][i] > maxFrequency) {
+            maxFrequency = frequencyArray[1][i];
+        }
+    }
+
+    // Output the mode(s)
+    if (maxFrequency > 1) {
+        for (int i = 0; i < modeCount; i++) {
+            if (frequencyArray[1][i] == maxFrequency) {
+                cout << "[" << frequencyArray[0][i] << "]";
+            }
+        }
+    }
+    else {
+        cout << "None";
+    }
+
+
+    cout << endl;
+
+    // Clean up the dynamically allocated memory
+    for (int i = 0; i < 2; i++) {
+        delete[] frequencyArray[i];
+    }
+    delete[] frequencyArray;
+
 }
