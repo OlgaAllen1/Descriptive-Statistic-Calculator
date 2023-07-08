@@ -25,15 +25,21 @@ int main()
         cout << "Enter data point (leave blank to stop): ";
         getline(cin, input);
 
-        if (input.empty()) {
+        if (input.empty()) { 
             break;
         }
 
+        else if (!isdigit(input[0]) && !(input[0] == '-' && isdigit (input [1]))) {
+            cout << "Please type numbers only." << endl;
+        }
+      
         else {
             double value = stod(input);
             data[size] = value;
             size++;
+            cout << "Adding" << value << "." << endl;
         }
+
     } while (size < MAX_SIZE);
     cout << "Original dataset: ";
     printDataSet(data, size);
@@ -127,7 +133,7 @@ void findMode(double* dataSet, int size) {
 
     // Initialize the frequency array
     for (int i = 0; i < size; i++) {
-        frequencyArray[0][i] = dataSet[i];
+        frequencyArray[0][i] = dataSet[i]; 
         frequencyArray[1][i] = 0;
     }
 
